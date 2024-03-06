@@ -1,0 +1,1194 @@
+CREATE TABLE TOMOTO
+  2  (
+  3  ORDID NUMBER(10),
+  4  PNAME VARCHAR(10),
+  5  PRICE NUMBER(10,2) NOT NULL
+  6  );
+
+Table created.
+
+SQL> CREATE TABLE CUST123
+  2  (
+  3  CID NUMBER (10)
+  4  ,
+  5  CNAME VARCHAR(10),
+  6  CPHNO NUMBER (10),
+  7  CONSTRAINTS PK12 PRIMARY KEY(CID)
+  8  );
+
+Table created.
+
+SQL> 
+SQL> ALTER TABLE TOMOTO
+  2  ADD CONSTRAINT CID_FK12 FOREIGN KEY (CID)
+  3  REFERENCES CUST123(CID);
+ADD CONSTRAINT CID_FK12 FOREIGN KEY (CID)
+                                     *
+ERROR at line 2:
+ORA-00904: "CID": invalid identifier 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  ALTER TABLE TOMOTO
+  2* ADD CID NUMBER(10)/
+SQL> /
+ADD CID NUMBER(10)/
+                  *
+ERROR at line 2:
+ORA-01735: invalid ALTER TABLE option 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  ALTER TABLE TOMOTO
+  2* ADD COLUMN CID NUMBER(10)
+SQL> /
+ADD COLUMN CID NUMBER(10)
+    *
+ERROR at line 2:
+ORA-00904: : invalid identifier 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  ALTER TABLE TOMOTO
+  2  ADD COLUMN_NAME
+  3*  CID NUMBER(10)
+SQL> /
+ CID NUMBER(10)
+     *
+ERROR at line 3:
+ORA-01735: invalid ALTER TABLE option 
+
+
+SQL> DESC TOMOTO;
+ Name                                                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ ORDID                                                                                                                      NUMBER(10)
+ PNAME                                                                                                                      VARCHAR2(10)
+ PRICE                                                                                                             NOT NULL NUMBER(10,2)
+
+SQL> ADD TABLE TOMOTO
+SP2-0734: unknown command beginning "ADD TABLE ..." - rest of line ignored.
+SQL> 
+SQL> 
+SQL> ALTER TABLE TOMOTO
+  2  ADD CID NUMBER(12) UNIQUE;
+
+Table altered.
+
+SQL>  ALTER TABLE TOMOTO
+  2   ADD CONSTRAINT CID_FK12 FOREIGN KEY (CID)
+  3   REFERENCES CUST123(CID);
+
+Table altered.
+
+SQL>  CREATE TABLE STUDENT1
+  2  (
+  3  SID NUMBER(10) UNIQUE,
+  4  SNAME VARCHAR(10) NOT NULL,
+  5  SPHNO NUMBER(10)
+  6  );
+
+Table created.
+
+SQL> INSERT INTO STUDENT1 VALUES(1,'KALI',1246789874);
+
+1 row created.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1* INSERT INTO STUDENT1 VALUES(2,'KALLI',1247789874)
+SQL> /
+
+1 row created.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1* INSERT INTO STUDENT1 VALUES(3,'KALLIO',1247989874)
+SQL> /
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> SELECT * FROM STUDENT1;
+
+       SID SNAME           SPHNO                                                                                                                                                                        
+---------- ---------- ----------                                                                                                                                                                        
+         1 KALI       1246789874                                                                                                                                                                        
+         2 KALLI      1247789874                                                                                                                                                                        
+         3 KALLIO     1247989874                                                                                                                                                                        
+
+SQL> DELETE FROM STUDENT1
+  2  WHERE SID=1;
+
+1 row deleted.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  DELETE FROM STUDENT1
+  2* WHERE SID=2
+SQL> /
+
+1 row deleted.
+
+SQL> SELECT * FROM STUDENT1;
+
+       SID SNAME           SPHNO                                                                                                                                                                        
+---------- ---------- ----------                                                                                                                                                                        
+         3 KALLIO     1247989874                                                                                                                                                                        
+
+SQL> ROLLBACK;
+
+Rollback complete.
+
+SQL> SELECT * FROM STUDENT1;
+
+       SID SNAME           SPHNO                                                                                                                                                                        
+---------- ---------- ----------                                                                                                                                                                        
+         1 KALI       1246789874                                                                                                                                                                        
+         2 KALLI      1247789874                                                                                                                                                                        
+         3 KALLIO     1247989874                                                                                                                                                                        
+
+SQL> DELETE FROM STUDENT1
+  2  WHERE SID=2;
+
+1 row deleted.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> SELECT * FROM STUDENT;
+SELECT * FROM STUDENT
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1* SELECT * FROM STUDENT1
+SQL> /
+
+       SID SNAME           SPHNO                                                                                                                                                                        
+---------- ---------- ----------                                                                                                                                                                        
+         1 KALI       1246789874                                                                                                                                                                        
+         3 KALLIO     1247989874                                                                                                                                                                        
+
+SQL> ROLLBACK;
+
+Rollback complete.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1* SELECT * FROM STUDENT1
+SQL> /
+
+       SID SNAME           SPHNO                                                                                                                                                                        
+---------- ---------- ----------                                                                                                                                                                        
+         1 KALI       1246789874                                                                                                                                                                        
+         3 KALLIO     1247989874                                                                                                                                                                        
+
+SQL> SAVEPOINT S1;
+
+Savepoint created.
+
+SQL> DELETE FROM EMP
+  2  WHERE DEPT=10;
+WHERE DEPT=10
+      *
+ERROR at line 2:
+ORA-00904: "DEPT": invalid identifier 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  DELETE FROM EMP
+  2* WHERE DEPTNO=10
+SQL> /
+
+3 rows deleted.
+
+SQL> SELECT * FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                                                                                                   
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                                                                                                   
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20                                                                                                                   
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30                                                                                                                   
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30                                                                                                                   
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20                                                                                                                   
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30                                                                                                                   
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30                                                                                                                   
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20                                                                                                                   
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30                                                                                                                   
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20                                                                                                                   
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30                                                                                                                   
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20                                                                                                                   
+
+11 rows selected.
+
+SQL> SAVEPOINT S2;
+
+Savepoint created.
+
+SQL> DELETE FROM EMP WHERE DEPTNO=20;
+
+5 rows deleted.
+
+SQL> ROLBACK S1;
+SP2-0042: unknown command "ROLBACK S1" - rest of line ignored.
+SQL> ED
+Wrote file afiedt.buf
+
+  1* DELETE FROM EMP WHERE DEPTNO=20
+SQL> 
+SQL> ROLLBACK S1;
+ROLLBACK S1
+         *
+ERROR at line 1:
+ORA-02181: invalid option to ROLLBACK WORK 
+
+
+SQL> ROLLBACK S2;
+ROLLBACK S2
+         *
+ERROR at line 1:
+ORA-02181: invalid option to ROLLBACK WORK 
+
+
+SQL> ROLLBACK TO S2;
+
+Rollback complete.
+
+SQL> SELECT * FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                                                                                                   
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                                                                                                   
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20                                                                                                                   
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30                                                                                                                   
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30                                                                                                                   
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20                                                                                                                   
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30                                                                                                                   
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30                                                                                                                   
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20                                                                                                                   
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30                                                                                                                   
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20                                                                                                                   
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30                                                                                                                   
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20                                                                                                                   
+
+11 rows selected.
+
+SQL> ROLLBACK TO S1;
+
+Rollback complete.
+
+SQL> SELECT * FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                                                                                                   
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                                                                                                   
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20                                                                                                                   
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30                                                                                                                   
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30                                                                                                                   
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20                                                                                                                   
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30                                                                                                                   
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30                                                                                                                   
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10                                                                                                                   
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20                                                                                                                   
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10                                                                                                                   
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30                                                                                                                   
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20                                                                                                                   
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30                                                                                                                   
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20                                                                                                                   
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10                                                                                                                   
+
+14 rows selected.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> CREATE TABLE S1
+  2  (
+  3  NAME VARCHAR(10),
+  4  SALARY NUMBER (10)
+  5  );
+
+Table created.
+
+SQL> INSERT INTO S1 VALUES('RAHUL',1000);
+
+1 row created.
+
+SQL> SAVEPONIT S1;
+SP2-0734: unknown command beginning "SAVEPONIT ..." - rest of line ignored.
+SQL> 
+SQL> 
+SQL> 
+SQL> SAVEPOINT S1;
+
+Savepoint created.
+
+SQL> INSERT INTO S1 VALUES ('PRATHMESH',2000);
+
+1 row created.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  INSERT INTO S1 VALUES ('VIRAT
+  2* ',2000)
+SQL> /
+
+1 row created.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  INSERT INTO S1 VALUES ('ANUSHKA
+  2* ',2000)
+SQL> /
+
+1 row created.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  INSERT INTO S1 VALUES ('SACHIN
+  2* ',2000)
+  3  /
+
+1 row created.
+
+SQL> SAVEPOINT S2;
+
+Savepoint created.
+
+SQL> SELECT * FROM S1;
+
+NAME           SALARY                                                                                                                                                                                   
+---------- ----------                                                                                                                                                                                   
+RAHUL            1000                                                                                                                                                                                   
+PRATHMESH        2000                                                                                                                                                                                   
+VIRAT            2000                                                                                                                                                                                   
+ANUSHKA          2000                                                                                                                                                                                   
+SACHIN           2000                                                                                                                                                                                   
+
+SQL> ROLLBACK TO S2;
+
+Rollback complete.
+
+SQL> SELECT * FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                                                                                                   
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                                                                                                   
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20                                                                                                                   
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30                                                                                                                   
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30                                                                                                                   
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20                                                                                                                   
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30                                                                                                                   
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30                                                                                                                   
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10                                                                                                                   
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20                                                                                                                   
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10                                                                                                                   
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30                                                                                                                   
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20                                                                                                                   
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30                                                                                                                   
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20                                                                                                                   
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10                                                                                                                   
+
+14 rows selected.
+
+SQL> SELECT * FROM S1;
+
+NAME           SALARY                                                                                                                                                                                   
+---------- ----------                                                                                                                                                                                   
+RAHUL            1000                                                                                                                                                                                   
+PRATHMESH        2000                                                                                                                                                                                   
+VIRAT            2000                                                                                                                                                                                   
+ANUSHKA          2000                                                                                                                                                                                   
+SACHIN           2000                                                                                                                                                                                   
+
+SQL> ROLLBACK TO S1;
+
+Rollback complete.
+
+SQL> SELECT * FROM S1;
+
+NAME           SALARY                                                                                                                                                                                   
+---------- ----------                                                                                                                                                                                   
+RAHUL            1000                                                                                                                                                                                   
+
+SQL> ROLBACK TO S2;
+SP2-0734: unknown command beginning "ROLBACK TO..." - rest of line ignored.
+SQL> ED
+Wrote file afiedt.buf
+
+  1* SELECT * FROM S1
+SQL> 
+SQL> 
+SQL> ROLLBACK TO S2;
+ROLLBACK TO S2
+*
+ERROR at line 1:
+ORA-01086: savepoint 'S2' never established 
+
+
+SQL> ROLLBACK TO S2;
+ROLLBACK TO S2
+*
+ERROR at line 1:
+ORA-01086: savepoint 'S2' never established 
+
+
+SQL> SELECT * FROM S1;
+
+NAME           SALARY                                                                                                                                                                                   
+---------- ----------                                                                                                                                                                                   
+RAHUL            1000                                                                                                                                                                                   
+
+SQL> SELECT * FROM ALL
+  2  _USERS;
+SELECT * FROM ALL
+              *
+ERROR at line 1:
+ORA-00903: invalid table name 
+
+
+SQL> SELECT * FROM ALL_USERS;
+
+USERNAME                          USER_ID CREATED                                                                                                                                                       
+------------------------------ ---------- ---------                                                                                                                                                     
+BI                                     60 15-JUN-23                                                                                                                                                     
+PM                                     59 15-JUN-23                                                                                                                                                     
+SH                                     58 15-JUN-23                                                                                                                                                     
+IX                                     57 15-JUN-23                                                                                                                                                     
+OE                                     56 15-JUN-23                                                                                                                                                     
+HR                                     55 15-JUN-23                                                                                                                                                     
+SCOTT                                  54 30-AUG-05                                                                                                                                                     
+MGMT_VIEW                              53 30-AUG-05                                                                                                                                                     
+MDDATA                                 50 30-AUG-05                                                                                                                                                     
+SYSMAN                                 51 30-AUG-05                                                                                                                                                     
+MDSYS                                  46 30-AUG-05                                                                                                                                                     
+SI_INFORMTN_SCHEMA                     45 30-AUG-05                                                                                                                                                     
+ORDPLUGINS                             44 30-AUG-05                                                                                                                                                     
+ORDSYS                                 43 30-AUG-05                                                                                                                                                     
+OLAPSYS                                47 30-AUG-05                                                                                                                                                     
+ANONYMOUS                              39 30-AUG-05                                                                                                                                                     
+XDB                                    38 30-AUG-05                                                                                                                                                     
+CTXSYS                                 36 30-AUG-05                                                                                                                                                     
+EXFSYS                                 34 30-AUG-05                                                                                                                                                     
+WMSYS                                  25 30-AUG-05                                                                                                                                                     
+DBSNMP                                 24 30-AUG-05                                                                                                                                                     
+TSMSYS                                 21 30-AUG-05                                                                                                                                                     
+DMSYS                                  35 30-AUG-05                                                                                                                                                     
+DIP                                    19 30-AUG-05                                                                                                                                                     
+OUTLN                                  11 30-AUG-05                                                                                                                                                     
+SYSTEM                                  5 30-AUG-05                                                                                                                                                     
+SYS                                     0 30-AUG-05                                                                                                                                                     
+
+27 rows selected.
+
+SQL> GRANT CREATE ON EMP TO SCOTT;
+GRANT CREATE ON EMP TO SCOTT
+                *
+ERROR at line 1:
+ORA-02224: EXECUTE privilege not allowed for tables 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1* GRANT CREATE ON EMP TO SYSMAN
+SQL> /
+GRANT CREATE ON EMP TO SYSMAN
+                *
+ERROR at line 1:
+ORA-02224: EXECUTE privilege not allowed for tables 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1* GRANT CREATE ON S1 TO SYSMAN
+SQL> /
+GRANT CREATE ON S1 TO SYSMAN
+                *
+ERROR at line 1:
+ORA-02224: EXECUTE privilege not allowed for tables 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1* GRANT SQLSTATEMENT ON S1 TO SYSMAN
+SQL> /
+GRANT SQLSTATEMENT ON S1 TO SYSMAN
+      *
+ERROR at line 1:
+ORA-00990: missing or invalid privilege 
+
+
+SQL> 
+SQL> GRANT SQLSTATEMENT ON EMP TO SYSMAN;
+GRANT SQLSTATEMENT ON EMP TO SYSMAN
+      *
+ERROR at line 1:
+ORA-00990: missing or invalid privilege 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1* GRANT SQLSTATEMENT ON EMP TO XDB
+  2  /
+GRANT SQLSTATEMENT ON EMP TO XDB
+      *
+ERROR at line 1:
+ORA-00990: missing or invalid privilege 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  GRANT SQLSTATEMENTS
+  2*  ON EMP TO XDB
+SQL> /
+GRANT SQLSTATEMENTS
+      *
+ERROR at line 1:
+ORA-00990: missing or invalid privilege 
+
+
+SQL> 
+SQL> SHOW USER;
+USER is "SCOTT"
+SQL> 
+SQL> 
+SQL> SELECT * FROM ALL_USERS;
+
+USERNAME                          USER_ID CREATED                                                                                                                                                       
+------------------------------ ---------- ---------                                                                                                                                                     
+BI                                     60 15-JUN-23                                                                                                                                                     
+PM                                     59 15-JUN-23                                                                                                                                                     
+SH                                     58 15-JUN-23                                                                                                                                                     
+IX                                     57 15-JUN-23                                                                                                                                                     
+OE                                     56 15-JUN-23                                                                                                                                                     
+HR                                     55 15-JUN-23                                                                                                                                                     
+SCOTT                                  54 30-AUG-05                                                                                                                                                     
+MGMT_VIEW                              53 30-AUG-05                                                                                                                                                     
+MDDATA                                 50 30-AUG-05                                                                                                                                                     
+SYSMAN                                 51 30-AUG-05                                                                                                                                                     
+MDSYS                                  46 30-AUG-05                                                                                                                                                     
+SI_INFORMTN_SCHEMA                     45 30-AUG-05                                                                                                                                                     
+ORDPLUGINS                             44 30-AUG-05                                                                                                                                                     
+ORDSYS                                 43 30-AUG-05                                                                                                                                                     
+OLAPSYS                                47 30-AUG-05                                                                                                                                                     
+ANONYMOUS                              39 30-AUG-05                                                                                                                                                     
+XDB                                    38 30-AUG-05                                                                                                                                                     
+CTXSYS                                 36 30-AUG-05                                                                                                                                                     
+EXFSYS                                 34 30-AUG-05                                                                                                                                                     
+WMSYS                                  25 30-AUG-05                                                                                                                                                     
+DBSNMP                                 24 30-AUG-05                                                                                                                                                     
+TSMSYS                                 21 30-AUG-05                                                                                                                                                     
+DMSYS                                  35 30-AUG-05                                                                                                                                                     
+DIP                                    19 30-AUG-05                                                                                                                                                     
+OUTLN                                  11 30-AUG-05                                                                                                                                                     
+SYSTEM                                  5 30-AUG-05                                                                                                                                                     
+SYS                                     0 30-AUG-05                                                                                                                                                     
+
+27 rows selected.
+
+SQL> GRANT SELECT ON DEPT TO HR;
+
+Grant succeeded.
+
+SQL> CONNECT
+Enter user-name: HR
+Connected.
+SQL> SHOW USER;
+USER is "HR"
+SQL> SELECT * FROM TAB;
+
+TNAME                          TABTYPE  CLUSTERID                                                                                                                                                       
+------------------------------ ------- ----------                                                                                                                                                       
+REGIONS                        TABLE                                                                                                                                                                    
+COUNTRIES                      TABLE                                                                                                                                                                    
+LOCATIONS                      TABLE                                                                                                                                                                    
+DEPARTMENTS                    TABLE                                                                                                                                                                    
+JOBS                           TABLE                                                                                                                                                                    
+EMPLOYEES                      TABLE                                                                                                                                                                    
+JOB_HISTORY                    TABLE                                                                                                                                                                    
+EMP_DETAILS_VIEW               VIEW                                                                                                                                                                     
+
+8 rows selected.
+
+SQL> SELECT * FROM DEPT;
+SELECT * FROM DEPT
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT * FROM SCOTT.DEPT;
+
+    DEPTNO DNAME          LOC                                                                                                                                                                           
+---------- -------------- -------------                                                                                                                                                                 
+        10 ACCOUNTING     NEW YORK                                                                                                                                                                      
+        20 RESEARCH       DALLAS                                                                                                                                                                        
+        30 SALES          CHICAGO                                                                                                                                                                       
+        40 OPERATIONS     BOSTON                                                                                                                                                                        
+
+SQL> CONNECT
+Enter user-name: SCOTT
+Connected.
+SQL> SHOW USER
+USER is "SCOTT"
+SQL> 
+SQL> 
+SQL> GRANT SELECT ON EMP TO HR;
+
+Grant succeeded.
+
+SQL> SELECT * FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                                                                                                   
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                                                                                                   
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20                                                                                                                   
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30                                                                                                                   
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30                                                                                                                   
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20                                                                                                                   
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30                                                                                                                   
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30                                                                                                                   
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10                                                                                                                   
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20                                                                                                                   
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10                                                                                                                   
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30                                                                                                                   
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20                                                                                                                   
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30                                                                                                                   
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20                                                                                                                   
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10                                                                                                                   
+
+14 rows selected.
+
+SQL> CONNECT
+Enter user-name: HR
+Connected.
+SQL> UPDATE SCOTT.EMP
+  2  SET ENAME='SMITH'
+  3  WHERE SAL=5000;
+UPDATE SCOTT.EMP
+             *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> CONNECT
+Enter user-name: SCOTT
+Connected.
+SQL> REVOKE SELECT ON EMP FROM HR;
+
+Revoke succeeded.
+
+SQL> CONNECT
+Enter user-name: HR
+Connected.
+SQL> SELECT * FROM SCOTT.EMP;
+SELECT * FROM SCOTT.EMP
+                    *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> CONNECT
+Enter user-name: SCOTT
+Connected.
+SQL> REVOKE SELECT ON DEPT FROM HR;
+
+Revoke succeeded.
+
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC                                                                                                                                                                           
+---------- -------------- -------------                                                                                                                                                                 
+        10 ACCOUNTING     NEW YORK                                                                                                                                                                      
+        20 RESEARCH       DALLAS                                                                                                                                                                        
+        30 SALES          CHICAGO                                                                                                                                                                       
+        40 OPERATIONS     BOSTON                                                                                                                                                                        
+
+SQL> CONNECT
+Enter user-name: HR
+Connected.
+SQL> SELECT * FROM SCOTT.DEPT;
+SELECT * FROM SCOTT.DEPT
+                    *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> CONNECT
+Enter user-name: SCOTT
+Connected.
+SQL> SHOW USER
+USER is "SCOTT"
+SQL> SELECT * FROM TAB;
+
+TNAME                          TABTYPE  CLUSTERID                                                                                                                                                       
+------------------------------ ------- ----------                                                                                                                                                       
+DEPT                           TABLE                                                                                                                                                                    
+EMP                            TABLE                                                                                                                                                                    
+BONUS                          TABLE                                                                                                                                                                    
+SALGRADE                       TABLE                                                                                                                                                                    
+BANK1                          TABLE                                                                                                                                                                    
+AXIS                           TABLE                                                                                                                                                                    
+ECO                            TABLE                                                                                                                                                                    
+MB                             TABLE                                                                                                                                                                    
+CUST123                        TABLE                                                                                                                                                                    
+PRODUCT                        TABLE                                                                                                                                                                    
+CUSTOMER                       TABLE                                                                                                                                                                    
+TOMOTO                         TABLE                                                                                                                                                                    
+STUDENT1                       TABLE                                                                                                                                                                    
+S1                             TABLE                                                                                                                                                                    
+
+14 rows selected.
+
+SQL> SELECT * FROM AXIS;
+
+no rows selected
+
+SQL> SELECT * FROM ECO;
+
+no rows selected
+
+SQL> GRANT UPDATE ON EMP TO HR;
+
+Grant succeeded.
+
+SQL> SELECT * FROM EMP
+  2  WHERE
+  3  
+SQL> 
+SQL> 
+SQL> UPDATE SCOTT.EMP
+  2  SET SAL=2000
+  3  WHERE ENAME='SMITH';
+
+1 row updated.
+
+SQL> CONNECT
+Enter user-name: HR
+Connected.
+SQL> 
+SQL> UPDATE SCOTT.EMP
+  2  SET SAL=2000
+  3  WHERE ENAME='SMITH';
+
+1 row updated.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  UPDATE EMP
+  2  SET SAL=2000
+  3* WHERE ENAME='SMITH'
+SQL> /
+UPDATE EMP
+       *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  UPDATE SCOTT.EMP
+  2  SET SAL=2000
+  3* WHERE ENAME='SMITH'
+SQL> /
+
+1 row updated.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  UPDATE HR.EMP
+  2  SET SAL=2000
+  3* WHERE ENAME='SMITH'
+SQL> /
+UPDATE HR.EMP
+          *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> REVOKE UPDATE ON EMP FROM HR;
+REVOKE UPDATE ON EMP FROM HR
+                 *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> CONNECT
+Enter user-name: SCOTT
+Connected.
+SQL> REVOKE UPDATE ON EMP FROM HR;
+
+Revoke succeeded.
+
+SQL> CONNECT
+Enter user-name: HR
+Connected.
+SQL> 
+SQL> 
+SQL> UPDATE SCOTT.EMP
+  2  SET SAL=2000
+  3  WHERE ENAME='SMITH'
+  4  /
+UPDATE SCOTT.EMP
+             *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> CONNECT
+Enter user-name: SCOTT
+Connected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> GRANT ALL ON DEPT TO HR;
+
+Grant succeeded.
+
+SQL> CONNECT
+Enter user-name: HR
+Connected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> INSERT INTO DEPT VALUES(50,'AHS',
+  2  'PUNE');
+INSERT INTO DEPT VALUES(50,'AHS',
+            *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> CONNECT
+Enter user-name: 
+ERROR:
+ORA-01017: invalid username/password; logon denied 
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> CONNECT
+Enter user-name: SCOTT
+Connected.
+SQL> INSERT INTO DEPT VALUES(50,'AHS',
+  2  'PUNE');
+
+1 row created.
+
+SQL> UPDATE SCOTT.EMP
+  2  SET LOC='PUNE'
+  3  WHERE DEPTNO=40;
+SET LOC='PUNE'
+    *
+ERROR at line 2:
+ORA-00904: "LOC": invalid identifier 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  UPDATE SCOTT.EMP
+  2  SET LOC='NEW YORK'
+  3* WHERE DEPTNO=40
+SQL> /
+SET LOC='NEW YORK'
+    *
+ERROR at line 2:
+ORA-00904: "LOC": invalid identifier 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  UPDATE SCOTT.DEPT
+  2  SET LOC='NEW YORK'
+  3* WHERE DEPTNO=40
+SQL> /
+
+1 row updated.
+
+SQL> INSERT INTO SCOTT.DEPT
+  2  VALUES(50,'SALES2','PUNE');
+INSERT INTO SCOTT.DEPT
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SCOTT.PK_DEPT) violated 
+
+
+SQL> CONNECT
+Enter user-name: HR
+Connected.
+SQL>  UPDATE SCOTT.DEPT
+  2   SET LOC='NEW YORK'
+  3   WHERE DEPTNO=40
+  4  ;
+
+1 row updated.
+
+SQL> SELECT * FROM DEPT;
+SELECT * FROM DEPT
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> DELETE FROM SCOTT.DEPT
+  2  WHERE LOC='DALLAS';
+DELETE FROM SCOTT.DEPT
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (SCOTT.FK_DEPTNO) violated - child record found 
+
+
+SQL> SELECT * FROM SCOTT.DEPT;
+
+    DEPTNO DNAME          LOC                                                                                                                                                                           
+---------- -------------- -------------                                                                                                                                                                 
+        50 AHS            PUNE                                                                                                                                                                          
+        10 ACCOUNTING     NEW YORK                                                                                                                                                                      
+        20 RESEARCH       DALLAS                                                                                                                                                                        
+        30 SALES          CHICAGO                                                                                                                                                                       
+        40 OPERATIONS     NEW YORK                                                                                                                                                                      
+
+SQL> DELETE FROM SCOTT.DEPT
+  2  LOC='PUNE';
+LOC='PUNE'
+   *
+ERROR at line 2:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  DELETE FROM SCOTT.DEPT
+  2* WHERE LOC='PUNE'
+SQL> /
+
+1 row deleted.
+
+SQL> INSERT INTO SCOTT.DEPT
+  2  VALUES(60,'SSS',KARVENAGAR');
+ERROR:
+ORA-01756: quoted string not properly terminated 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  INSERT INTO SCOTT.DEPT
+  2* VALUES(60,'MONGO','KARVENAGAR')
+SQL> /
+
+1 row created.
+
+SQL> SHOW USER;
+USER is "HR"
+SQL> CONNECT
+Enter user-name: SCOTT
+Connected.
+SQL> REVOKE ALL ON DEPT FROM HR;
+
+Revoke succeeded.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> CONNECT HR
+Connected.
+SQL> INSERT INTO SCOTT.DEPT
+  2  VALUES(60,'MONGO','KARVENAGAR');
+INSERT INTO SCOTT.DEPT
+                  *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> CONNECT
+Enter user-name: SCOTT
+Connected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> INSERT INTO SCOTT.DEPT
+  2  VALUES(60,'MONGO','KARVENAGAR');
+INSERT INTO SCOTT.DEPT
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SCOTT.PK_DEPT) violated 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  INSERT INTO DEPT
+  2* VALUES(60,'MONGO','KARVENAGAR')
+SQL> /
+INSERT INTO DEPT
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SCOTT.PK_DEPT) violated 
+
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> UPDATE DEPT
+  2  SET LOC='NEW YORK'
+  3  WHERE LOC='DALLAS';
+
+1 row updated.
+
+SQL> 
+SQL> CREATE USER KALYANI IDENTIFIED BY TIGER;
+CREATE USER KALYANI IDENTIFIED BY TIGER
+                                  *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> CONNECT
+Enter user-name: SYSTEM
+ERROR:
+ORA-01017: invalid username/password; logon denied 
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> CONNECT
+Enter user-name: SYSTEM
+Connected.
+SQL> 
+SQL> CREATE USER KALYANI IDENTIFIED BY TIGER
+  2  ;
+
+User created.
+
+SQL> GRANT DBA TO KALYANI;
+
+Grant succeeded.
+
+SQL> CONNECT
+Enter user-name: KALYANI
+Connected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL>  UPDATE DEPT
+  2   SET LOC='NEW YORK'
+  3   WHERE LOC='DALLAS';
+ UPDATE DEPT
+        *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   UPDATE SCOTT.DEPT
+  2   SET LOC='NEW YORK'
+  3*  WHERE LOC='DALLAS'
+SQL> /
+
+0 rows updated.
+
+SQL> SHOW USERS;
+SP2-0158: unknown SHOW option "USERS"
+SQL> ED
+Wrote file afiedt.buf
+
+  1   UPDATE SCOTT.DEPT
+  2   SET LOC='NEW YORK'
+  3*  WHERE LOC='DALLAS'
+SQL> SHOW USER;
+USER is "KALYANI"
+SQL> CONNECT
+Enter user-name: SCOTT
+Connected.
+SQL> SELECT * FROM ALL_USERS;
+
+USERNAME                          USER_ID CREATED                                                                                                                                                       
+------------------------------ ---------- ---------                                                                                                                                                     
+KALYANI                                61 12-JUL-23                                                                                                                                                     
+BI                                     60 15-JUN-23                                                                                                                                                     
+PM                                     59 15-JUN-23                                                                                                                                                     
+SH                                     58 15-JUN-23                                                                                                                                                     
+IX                                     57 15-JUN-23                                                                                                                                                     
+OE                                     56 15-JUN-23                                                                                                                                                     
+HR                                     55 15-JUN-23                                                                                                                                                     
+SCOTT                                  54 30-AUG-05                                                                                                                                                     
+MGMT_VIEW                              53 30-AUG-05                                                                                                                                                     
+MDDATA                                 50 30-AUG-05                                                                                                                                                     
+SYSMAN                                 51 30-AUG-05                                                                                                                                                     
+MDSYS                                  46 30-AUG-05                                                                                                                                                     
+SI_INFORMTN_SCHEMA                     45 30-AUG-05                                                                                                                                                     
+ORDPLUGINS                             44 30-AUG-05                                                                                                                                                     
+ORDSYS                                 43 30-AUG-05                                                                                                                                                     
+OLAPSYS                                47 30-AUG-05                                                                                                                                                     
+ANONYMOUS                              39 30-AUG-05                                                                                                                                                     
+XDB                                    38 30-AUG-05                                                                                                                                                     
+CTXSYS                                 36 30-AUG-05                                                                                                                                                     
+EXFSYS                                 34 30-AUG-05                                                                                                                                                     
+WMSYS                                  25 30-AUG-05                                                                                                                                                     
+DBSNMP                                 24 30-AUG-05                                                                                                                                                     
+TSMSYS                                 21 30-AUG-05                                                                                                                                                     
+DMSYS                                  35 30-AUG-05                                                                                                                                                     
+DIP                                    19 30-AUG-05                                                                                                                                                     
+OUTLN                                  11 30-AUG-05                                                                                                                                                     
+SYSTEM                                  5 30-AUG-05                                                                                                                                                     
+SYS                                     0 30-AUG-05                                                                                                                                                     
+
+28 rows selected.
+
+SQL> SELECT * FROM ALL_CONSTRAINTS
+     WHERE TABLE_NAME='BANK';
